@@ -10,7 +10,7 @@ module Api
                     if !@app
                         render json:{message: 'cant find app with this data', status: :notfound}
                     end
-                    chats = @app.chats.limit(limit).offset(params[:offset])
+                    chats = @app.chats.limit(limit).offset(params[:offset]).select('msgCount, number').as_json(:except => :id)
                     render json: chats
                 end
                 def create
@@ -34,7 +34,7 @@ module Api
                         if Rails.cache.redis.HEXISTS("apps_chat_count_job",@app.token) == 0
                             puts "Adding a job to update the count in 30 minutes!"
                             Rails.cache.redis.hset("apps_chat_count_job", @app.token, 1)
-                            AppChatCountJob.perform_in(30.minutes, @app.token)
+                            AppChatCountJob.perform_in(45.minutes, @app.token)
                         else 
                             puts "Job already exists for this chat to update the count!"
                         end

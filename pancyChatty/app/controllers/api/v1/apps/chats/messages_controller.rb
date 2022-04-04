@@ -7,7 +7,7 @@ module Api
                     MAX_PAGINATION_LIMIT=100
                     def index
                         puts "Getting the msgs for this chat limited to 100 and can specify offset!"
-                        messages = @chat.messages.limit(limit).offset(params[:offset])
+                        messages = @chat.messages.limit(limit).offset(params[:offset]).select('content, number').as_json(:except => :id)
                         render json: messages
                     end
                     def search 
@@ -36,11 +36,11 @@ module Api
                             if Rails.cache.redis.HEXISTS("chat_message_count_job",@chat.id) == 0
                                 puts "Adding a job to update the msgs count for a chat"
                                 Rails.cache.redis.hset("chat_message_count_job", @chat.id, 1)
-                                ChatMessageCountJob.perform_in(1.minutes, @chat.id)
+                                ChatMessageCountJob.perform_in(45.minutes, @chat.id)
                             else 
                                 puts "Job already exists"
                             end
-                            render json:{message: message},status: :created
+                            render json:{message: message.content, number: message.number},status: :created
                         else 
                             render json: {error: message.errors}, status: :unprocessable_entity
                         end
