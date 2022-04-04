@@ -9,6 +9,10 @@ And this is a chat system application using Ruby on Rails
 
 all you need is docker installed in you machine and run the following
 
+**NOTE**
+This app will generate a folder named data that will hold the mysql folders and redis. feel free delete it once you are done.
+
+
  
 ```bash
   docker-compose build
