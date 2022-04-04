@@ -7,7 +7,7 @@ And this is a chat system application using Ruby on Rails
 ---
 ## How to run the project!
 
-all you need is docker installed in you machine and run the following
+all you need is docker installed on your machine and run the following
 
 **NOTE**
 This app will generate a folder named data that will hold the mysql folders and redis. feel free delete it once you are done.
@@ -118,7 +118,7 @@ this is limited to 100 record and you can specify :limit and :offset
 
 #### Search for a message
 
-This feature is made by elastic search so you need to hava an instance of elastic
+This feature is made by elastic search so you need to hava an instance of edocker installed in you machine and run the followinglastic
 running and provide the url in the ruby.env file
 
 I couldn't run it in my docker-compose as it freezes my laptop for some reason.
