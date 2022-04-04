@@ -1,0 +1,75 @@
+version: "2.4"
+
+services:
+  pancychatty:
+    build: ./pancyChatty
+    entrypoint: [./bin/entry.sh]
+    volumes:
+      - ./pancyChatty:/ruby
+    networks:
+      - backend
+    ports:
+      - 3000:3000
+    depends_on:
+      db:
+        condition: service_healthy
+      sidekiq:
+        condition: service_started
+    env_file:
+      - .ruby.env
+
+  sidekiq:
+    build: ./pancyChatty
+    command: bundle exec sidekiq
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./pancyChatty:/ruby
+    env_file:
+      - .ruby.env
+    networks:
+      - backend
+
+  db:
+    image: mysql:8
+    volumes:
+      - ./data/database/files:/var/lib/mysql
+    networks:
+      - backend
+    ports:
+      - 3306:3306
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+    env_file:
+      - .db.env
+
+  redis:
+    image: redis:6-bullseye
+    command: redis-server
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+    volumes:
+      - ./data/database/redis:/data
+    networks:
+      - backend
+    ports:
+      - 6379:6379
+
+
+  # elastic:
+  #   image: elasticsearch:8.1.2
+  #   networks:
+  #     - backend
+  #   ports:
+  #     - 9200:9200
+  #   environment:
+  #   - xpack.security.enabled=false
+  #   - "discovery.type=single-node"
+
+
+    
+networks:
+  backend:
