@@ -132,8 +132,16 @@ you can search by sending a GET request to
 localhost:3000/api/v1/apps/<YOUR_APP_TOKEN>/chats/<CHAT_NUMBER>/search/<SEARCH_KEY>
 ```
 
+## Lessons Learned
 
- 
+In this project I was Introduced to caching using redis and locking using it, background processors and 
+views(materialized and normal view) however I didn't use views,
+Used elastic search in for my search(In a basic way).
+
+
+- [ ] prevent direct writing to the db and why will I do that.
+
+
  
 
 
