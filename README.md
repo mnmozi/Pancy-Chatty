@@ -118,7 +118,7 @@ this is limited to 100 record and you can specify :limit and :offset
 
 #### Search for a message
 
-This feature is made by elastic search so you need to hava an instance of edocker installed in you machine and run the followinglastic
+This feature is made by elastic search so you need to hava an have elastic installed on you machine and
 running and provide the url in the ruby.env file
 
 I couldn't run it in my docker-compose as it freezes my laptop for some reason.
